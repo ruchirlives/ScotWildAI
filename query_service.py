@@ -157,8 +157,12 @@ class QueryService:
 
     def write_blog(self, query: str) -> str:
         """Write a blog post based on the query."""
-        assertions = database_service.get_blog_assertions(query)
-        policies = database_service.get_policy_assertions(query)
+        assertions_cursor = database_service.get_blog_assertions(query)
+        policies_cursor = database_service.get_policy_assertions(query)
+
+        # Convert cursors to lists
+        assertions = list(assertions_cursor)
+        policies = list(policies_cursor)
 
         content = (
             "Please write a 400-word blog post with an engaging title in response to "

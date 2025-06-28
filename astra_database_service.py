@@ -92,8 +92,11 @@ class AstraDBService(DatabaseServiceInterface):
         """Get related blog assertions."""
         try:
             collection = self._db.get_collection("blogs")
-            assertions = collection.find(sort={"$vectorize": query})
-            assertions = list(assertions["data"]["documents"])
+            assertions_cursor = collection.find(sort={"$vectorize": query})
+
+            # Convert the cursor to a list of documents
+            assertions = list(assertions_cursor)
+
             return assertions[:limit]
         except Exception as e:
             logger.error(f"Error getting blog assertions: {e}")

@@ -36,11 +36,10 @@ def get_current_service():
 
 def set_current_service(service):
     """Set the current service instance."""
-    global query_service
     if service.lower() == "azure":
-        query_service = DatabaseServiceFactory.create_service("azure")
+        config.database_provider = DatabaseServiceFactory.create_service("azure")
     elif service.lower() == "astra":
-        query_service = DatabaseServiceFactory.create_service("astra")
+        config.database_provider = DatabaseServiceFactory.create_service("astra")
     else:
         raise ValueError(f"Unsupported service: {service}. Supported services are 'azure' and 'astra'.")
 
@@ -52,6 +51,7 @@ def require_api_key(f):
         api_key = request.headers.get("X-API-KEY")
         if api_key != config.api_key:
             return {"error": "Unauthorized: Invalid API key"}, 401
+
         return f(*args, **kwargs)
     return decorated_function
 
@@ -71,6 +71,8 @@ def enquiries():
         if not query:
             return {"error": "Query parameter is required"}, 400
 
+        # Set the current service to Astra
+        set_current_service("astra")
         response = query_service.process_enquiry(query)
         return response
     except Exception as e:
@@ -92,6 +94,7 @@ def policyquery():
         if not query:
             return {"error": "Query parameter is required"}, 400
 
+        set_current_service("astra")
         response = query_service.process_policy_query(query)
         return response
 
@@ -114,6 +117,8 @@ def vcquery():
         if not query:
             return {"error": "Query parameter is required"}, 400
 
+        # Set the current service to Astra
+        set_current_service("astra")
         response = query_service.process_visitor_query(query)
         return response
     except Exception as e:
@@ -135,6 +140,8 @@ def blog():
         if not query:
             return {"error": "Query parameter is required"}, 400
 
+        # Set the current service to Astra
+        set_current_service("astra")
         response = query_service.write_blog(query)
         return response
     except Exception as e:
