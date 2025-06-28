@@ -1,0 +1,9 @@
+Flask==3.0.2
+gunicorn==21.2.0
+openai
+Werkzeug==3.0.1
+python-docx==0.8.11
+astrapy
+markdown==3.3.7
+neo4j==5.18.0
+azure-search-documents

@@ -1,0 +1,6 @@
+# Azure Search dependencies (optional)
+# Install these if you want to use Azure Cognitive Search as your database provider:
+# pip install azure-search-documents azure-core
+
+azure-search-documents>=11.4.0
+azure-core>=1.29.0

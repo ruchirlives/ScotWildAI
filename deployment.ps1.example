@@ -1,0 +1,7 @@
+# Example deployment script - copy to deployment.ps1 and set your project ID
+# Set your project ID here or use: gcloud config set project YOUR_PROJECT_ID
+$PROJECT_ID = "YOUR_PROJECT_ID_HERE"
+
+gcloud auth login
+gcloud config set project $PROJECT_ID
+gcloud builds submit --config=cloudbuild.yaml .

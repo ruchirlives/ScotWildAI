@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App Web Interface</title>
+    <!-- Tailwind CSS (using CDN) -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+
+<div class="container mx-auto py-10">
+    <div class="text-center mb-10">
+        <h1 class="text-4xl font-bold text-gray-800">ScotWildAI Homepage</h1>
+        <p class="text-gray-600 mt-2">Interact with the application using the forms below</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Upload a Word File -->
+        <div class="bg-white shadow-md rounded-lg p-6">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Upload a Word File</h2>
+            <form action="/wordify" method="post" enctype="multipart/form-data">
+                <div class="mb-4">
+                    <label for="file" class="block text-gray-700 font-medium mb-2">Select a Word template file</label>
+                    <input class="w-full border border-gray-300 rounded-lg p-2" type="file" id="file" name="file" required>
+                </div>
+                <div class="mb-4">
+                    <label for="list" class="block text-gray-700 font-medium mb-2">Enter Sharepoint List JSON</label>
+                    <input class="w-full border border-gray-300 rounded-lg p-2" type="text" id="list" name="list" placeholder="{'placeholder':title, 'newtext':outputs}" required>
+                </div>
+                <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600">Upload</button>
+            </form>
+        </div>
+
+        <!-- Make a Policy Query -->
+        <div class="bg-white shadow-md rounded-lg p-6">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Make a Policy Query</h2>
+            <form action="/policyquery" method="post">
+                <div class="mb-4">
+                    <label for="query" class="block text-gray-700 font-medium mb-2">Enter Query</label>
+                    <input class="w-full border border-gray-300 rounded-lg p-2" type="text" id="query" name="query" placeholder="Enter query text" required>
+                </div>
+                <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600">Submit</button>
+            </form>
+        </div>
+
+        <!-- Make a Visitor Impact Evidence Query -->
+        <div class="bg-white shadow-md rounded-lg p-6">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Visitor Impact Evidence Query</h2>
+            <form action="/visitorevidence" method="post">
+                <div class="mb-4">
+                    <label for="query" class="block text-gray-700 font-medium mb-2">Enter Query</label>
+                    <input class="w-full border border-gray-300 rounded-lg p-2" type="text" id="query" name="query" placeholder="Enter query text" required>
+                </div>
+                <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600">Submit</button>
+            </form>
+        </div>
+
+        <!-- Get a Blog -->
+        <div class="bg-white shadow-md rounded-lg p-6">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Get a Blog</h2>
+            <form action="/blog" method="post">
+                <div class="mb-4">
+                    <label for="query" class="block text-gray-700 font-medium mb-2">Enter Subject</label>
+                    <input class="w-full border border-gray-300 rounded-lg p-2" type="text" id="query" name="query" placeholder="Enter subject text" required>
+                </div>
+                <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600">Submit</button>
+            </form>
+        </div>
+
+        <!-- Answer Enquiry -->
+        <div class="bg-white shadow-md rounded-lg p-6">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Answer Enquiry</h2>
+            <form action="/enquiries" method="post">
+                <div class="mb-4">
+                    <label for="query" class="block text-gray-700 font-medium mb-2">Enter Enquiry</label>
+                    <input class="w-full border border-gray-300 rounded-lg p-2" type="text" id="query" name="query" placeholder="Enter enquiry text" required>
+                </div>
+                <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600">Submit</button>
+            </form>
+        </div>
+
+        <!-- For Information -->
+        <div class="bg-white shadow-md rounded-lg p-6">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">For Information</h2>
+            <form action="/messages" method="post">
+                <div class="mb-4">
+                    <label for="query" class="block text-gray-700 font-medium mb-2">Enter Query</label>
+                    <input class="w-full border border-gray-300 rounded-lg p-2" type="text" id="query" name="query" placeholder="Enter query text" required>
+                </div>
+                <div class="mb-4">
+                    <label for="limit" class="block text-gray-700 font-medium mb-2">Limit (optional)</label>
+                    <input class="w-full border border-gray-300 rounded-lg p-2" type="number" id="limit" name="limit" placeholder="Enter number of results">
+                </div>
+                <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600">Submit</button>
+            </form>
+        </div>
+
+        <!-- Delete Message by ID -->
+        <div class="bg-white shadow-md rounded-lg p-6">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Delete Message by ID</h2>
+            <form action="/delete_message" method="get">
+                <div class="mb-4">
+                    <label for="message_id" class="block text-gray-700 font-medium mb-2">Enter Message ID</label>
+                    <input class="w-full border border-gray-300 rounded-lg p-2" type="text" id="message_id" name="id" placeholder="Enter message ID" required>
+                </div>
+                <button type="submit" class="w-full bg-red-500 text-white py-2 rounded-lg hover:bg-red-600">Delete</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
