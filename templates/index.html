@@ -106,7 +106,7 @@
             <form action="/delete_message" method="get">
                 <div class="mb-4">
                     <label for="message_id" class="block text-gray-700 font-medium mb-2">Enter Message ID</label>
-                    <input class="w-full border border-gray-300 rounded-lg p-2" type="text" id="message_id" name="id" placeholder="Enter message ID" required>
+                    <input class="w-full border border-gray-300 rounded-lg p-2" type="text" id="id" name="id" placeholder="Enter message ID" required>
                 </div>
                 <button type="submit" class="w-full bg-red-500 text-white py-2 rounded-lg hover:bg-red-600">Delete</button>
             </form>
@@ -134,13 +134,22 @@
                 const action = form.action;
                 const method = form.method;
 
-                fetch(action, {
+                let url = action;
+                let options = {
                     method: method,
                     headers: {
                         "X-API-KEY": apiKey
-                    },
-                    body: method.toLowerCase() === "get" ? null : formData
-                })
+                    }
+                };
+
+                if (method.toLowerCase() === "get") {
+                    const params = new URLSearchParams(formData).toString();
+                    url += `?${params}`;
+                } else {
+                    options.body = formData;
+                }
+
+                fetch(url, options)
                 .then(response => response.text())
                 .then(html => {
                     const newTab = window.open();
