@@ -272,6 +272,7 @@ def add_message():
         summary = data.get("summary", "")
         upload_date = data.get("uploadDate", "")
         url = data.get("url", "")
+        tag = data.get("tag", "")
 
         # Generate content_vector from message
         from openai_service import openai_service
@@ -288,6 +289,7 @@ def add_message():
             "uploadDate": upload_date,
             "url": url,
             "content_vector": content_vector,
+            "tag": tag,
         }
 
         azure_service = get_azure_service()
