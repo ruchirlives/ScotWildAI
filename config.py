@@ -27,6 +27,9 @@ class Config:
         self.azure_search_key = os.getenv("AZURE_SEARCH_KEY")
         self.azure_search_api_version = os.getenv("AZURE_SEARCH_API_VERSION", "2023-11-01")
 
+        # API Key for securing routes
+        self.api_key = os.getenv("API_KEY", "default_api_key")
+
         # Legacy database property for backwards compatibility
         self._client = None
         self._db = None

@@ -5,6 +5,7 @@ import base64
 from database_factory import DatabaseServiceFactory
 from config import config
 from query_service import query_service
+from functools import wraps
 
 # This is the path to the directory where you want to save the uploaded files.
 # Make sure this directory exists on your server.
@@ -44,7 +45,19 @@ def set_current_service(service):
         raise ValueError(f"Unsupported service: {service}. Supported services are 'azure' and 'astra'.")
 
 
+# Middleware to check API key
+def require_api_key(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        api_key = request.headers.get("X-API-KEY")
+        if api_key != config.api_key:
+            return {"error": "Unauthorized: Invalid API key"}, 401
+        return f(*args, **kwargs)
+    return decorated_function
+
+
 @routes_bp.route("/enquiries", methods=["POST"])
+@require_api_key
 def enquiries():
     """Handle general enquiries using Astra only."""
     try:
@@ -65,6 +78,7 @@ def enquiries():
 
 
 @routes_bp.route("/policyquery", methods=["POST"])
+@require_api_key
 def policyquery():
     """Handle policy queries using Astra only."""
     try:
@@ -86,6 +100,7 @@ def policyquery():
 
 
 @routes_bp.route("/visitorevidence", methods=["POST"])
+@require_api_key
 def vcquery():
     """Handle visitor evidence queries using Astra only."""
     try:
@@ -106,6 +121,7 @@ def vcquery():
 
 
 @routes_bp.route("/blog", methods=["POST"])
+@require_api_key
 def blog():
     """Handle blog generation using Astra only."""
     try:
@@ -126,6 +142,7 @@ def blog():
 
 
 @routes_bp.route("/messages", methods=["POST"])
+@require_api_key
 def messages():
     """Handle message queries using Azure only."""
     try:
@@ -153,6 +170,7 @@ def messages():
 
 
 @routes_bp.route("/health", methods=["GET"])
+@require_api_key
 def health():
     """Health check endpoint for database services."""
     try:
@@ -175,6 +193,7 @@ def health():
 
 
 @routes_bp.route("/search", methods=["POST"])
+@require_api_key
 def search():
     """Generic search endpoint that uses the currently configured database provider."""
     try:
@@ -206,6 +225,7 @@ def search():
 
 
 @routes_bp.route("/wordify", methods=["POST"])
+@require_api_key
 def wordify():
     if request.is_json:
         data = request.get_json()
@@ -232,6 +252,7 @@ def wordify():
 
 
 @routes_bp.route("/add_message", methods=["POST"])
+@require_api_key
 def add_message():
     """Add a message document to Azure Cognitive Search."""
     import uuid
@@ -280,6 +301,7 @@ def add_message():
 
 
 @routes_bp.route("/delete_messages", methods=["DELETE"])
+@require_api_key
 def delete_messages():
     """Delete all messages from Azure Cognitive Search."""
     try:
@@ -294,6 +316,7 @@ def delete_messages():
 
 
 @routes_bp.route("/get_recent_messages", methods=["GET"])
+@require_api_key
 def get_recent_messages():
     """Get messages uploaded within the last x days."""
     from datetime import datetime, timedelta
@@ -322,6 +345,7 @@ def get_recent_messages():
 
 
 @routes_bp.route("/delete_message", methods=["GET"])
+@require_api_key
 def delete_message():
     """Delete a specific message from Azure Cognitive Search by ID."""
     try:
@@ -344,6 +368,7 @@ def delete_message():
 
 
 @routes_bp.route("/retag", methods=["GET"])
+@require_api_key
 def retag():
     """Handle retagging of all messages in Azure Cognitive Search."""
     try:

@@ -13,6 +13,10 @@
     <div class="text-center mb-10">
         <h1 class="text-4xl font-bold text-gray-800">ScotWildAI Homepage</h1>
         <p class="text-gray-600 mt-2">Interact with the application using the forms below</p>
+        <div class="mt-4">
+            <label for="api-key" class="block text-gray-700 font-medium mb-2">Enter API Key</label>
+            <input class="w-1/2 border border-gray-300 rounded-lg p-2" type="password" id="api-key" placeholder="Enter your API key">
+        </div>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -109,6 +113,49 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const apiKeyInput = document.getElementById("api-key");
+        const forms = document.querySelectorAll("form");
+
+        forms.forEach(form => {
+            form.addEventListener("submit", function(event) {
+                const apiKey = apiKeyInput.value;
+                if (!apiKey) {
+                    event.preventDefault();
+                    alert("Please enter your API key.");
+                    return;
+                }
+
+                // Use Fetch API to send the form data with the API key in headers
+                event.preventDefault();
+                const formData = new FormData(form);
+                const action = form.action;
+                const method = form.method;
+
+                fetch(action, {
+                    method: method,
+                    headers: {
+                        "X-API-KEY": apiKey
+                    },
+                    body: method.toLowerCase() === "get" ? null : formData
+                })
+                .then(response => response.text())
+                .then(html => {
+                    const newTab = window.open();
+                    newTab.document.open();
+                    newTab.document.write(html);
+                    newTab.document.close();
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                    alert("An error occurred. Check the console for details.");
+                });
+            });
+        });
+    });
+</script>
 
 </body>
 </html>
